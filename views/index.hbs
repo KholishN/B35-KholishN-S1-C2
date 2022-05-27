@@ -22,11 +22,11 @@
               <li class="nav-item">
                 <a class="nav-link active text-dark me-4 fw-bold " aria-current="page" href="/">Home</a>
               </li>
-              {{#unless isLogin}}
+              
               <li class="nav-item">
                 <a class="nav-link text-dark fw-bold me-4" href="/addproject">Add Project</a>
               </li>
-              {{/unless}}
+             
             </ul>
             <form class="d-flex justify-content-end mb-2" role="search">
                 <a href="/contact" class="btn justify-content-end btn-outline-success bg-dark text-white  px-3 rounded-3 me-3"> Contact Me</a>
@@ -96,12 +96,12 @@
                     <div class="card-tech">
                     <i class="fa-brands fa-html5"></i>
                     <i class="fa-brands fa-js"></i>
-                    {{#if isLogin}}
+                    
                     <div class="card-button">
                     <a href="#" class="btn btn-dark px-5 py-1 me-3">Edit</a>
-                    <a href="#" class="btn btn-dark px-5 py-1">Delete</a>{{isLogin}}
+                    <a href="#" class="btn btn-dark px-5 py-1">Delete</a>
                     </div>
-                    {{/if}}
+                   
                     </div>
                     </div>
             </div>

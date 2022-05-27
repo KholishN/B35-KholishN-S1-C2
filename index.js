@@ -11,11 +11,9 @@ app.get("/",(req, res) =>{
     res.render("index")
 });
 
-app.get("/project/:index",(req, res) =>{
-    const index = req.params.index
-    console.log(index)
+app.get("/project",(req, res) =>{
 
-    res.render("detail-project", {index : index})
+    res.render("detail-project")
 
 });
 
