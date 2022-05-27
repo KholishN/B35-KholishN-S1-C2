@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Personal Web - Add Project</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/css/bootstrap.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/js/bootstrap.min.js" integrity="sha384-kjU+l4N0Yf4ZOJErLsIcvOU2qSb74wXpOhqTvwVx3OElZRweTnQ6d31fXEoRD1Jy" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="/public/style.css">
+    <script src="https://kit.fontawesome.com/c2c44e7070.js" crossorigin="anonymous"></script>
+</head>
+<body class="bg-form">
+   <nav class="navbar navbar-expand-lg bg-grey px-5 nv sticky-top">
+        <div class="container-fluid px-0"><a  href="/">
+          <img class="me-5 ms-3 " src="/public/assets/logo.png" alt="logo"></a>
+          <button class="navbar-toggler me-2" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+          </button>
+          <div class="collapse navbar-collapse bg-nav-col text-end  mt-1" id="navbar">
+            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+              <li class="nav-item">
+                <a class="nav-link active text-dark me-4 fw-bold " aria-current="page" href="/">Home</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link text-dark fw-bold me-4" href="/addproject">Add Project</a>
+              </li>
+            </ul>
+            <form class="d-flex justify-content-end mb-2" role="search">
+                <a href="/contact" class="btn justify-content-end btn-outline-success bg-dark text-white  px-3 rounded-3 me-3"> Contact Me</a>
+            </form>
+          </div>
+        </div>
+    </nav>
+
+    
+    <div class="project-container">
+        <h2>ADD MY PROJECT</h2>
+      <form action="/addproject" method="POST" class="form-container">
+        <div class="form-project">
+            <div class="mb-2">
+                <label for="input-project-name" class="form-label"> Project Name </label>
+                <input type="text" class="form-control h-form shdw" id="input-project-name" name="title">
+              </div>
+              
+              <div class="mb-2" >
+                <label for="input-date-start" class="c v ">Start Date</label>
+                <label for="input-date-end" class="v ">End Date</label><br>
+                <input type="date" class="inline-form-control date-i h-form" id="input-date-start" name="start">
+                <input type="date" class="inline-form-control date-i me-i h-form" id="input-date-end" name="end">
+              </div>
+
+              <div class="mb-2" >
+                <label for="input-content" class="form-label ">Description</label>
+                <textarea class="form-control des shdw" id="input-content" rows="3" name="content"></textarea>
+              </div>
+
+              <div class="mb-2 tech">
+                  <label class="form-label">Technologies</label><br>
+                <div class="form-check form-check-inline">
+                    
+                  <input class="form-check-input shdw" type="checkbox"  value='html' name="html">
+                  <label id="c1" class="form-check-labe z x">HTML</label>
+                </div>
+
+                  <div class="form-check form-check-inline">
+                   
+                  <input class="form-check-input shdw" type="checkbox"  value='css' name="css"> 
+                  <label id="c2" class="form-check-labe z ">CSS</label>
+                  </div>
+                    <br>
+                  <div class="form-check form-check-inline">
+                    
+              <input class="form-check-input shdw" type="checkbox"  value='js' name="js">
+              <label id="c1" class="form-check-labe z ">Javascript </label>
+                  </div>
+                  
+                  <div class="form-check form-check-inline">
+                    
+                <input class="form-check-input shdw" type="checkbox"  value='java' name="java">
+                <label id="c1" class="form-check-labe z ">Java</label>
+                  </div>
+                  
+              </div>
+
+              <div class="mb-3 j">
+                <label for="input-image" class="form-label mb-3">Upload Image</label>
+                    <i id="i" class="fa-solid fa-paperclip" for="input-image"></i>
+                <input class="form-control shdw" type="file" id="input-image" name="image" >
+              </div>
+
+              <div class="d-grid gap-2 d-md-flex justif y-content-md-end mb-3 k ">
+                <button class="btn btn-dark rounded-pill px-4 py-2 l k shdw" type="submit">Submit</button>
+              </div>
+
+
+        </div>
+        </form>
+    </div>
+    
+</body>
+</html>
