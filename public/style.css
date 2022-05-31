@@ -336,6 +336,16 @@ font-weight: 800;
 margin-bottom: 10px;
 }
 
+.mh{
+    width: 200px;
+    height: 100px;
+    margin-bottom: 20px;
+}
+
+.mh img {
+    width: 100%;
+    height: 100%;
+}
 
 
 

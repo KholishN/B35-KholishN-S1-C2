@@ -97,8 +97,12 @@
 
               <div class="mb-3 j">
                 <label for="input-image" class="form-label mb-3">Upload Image</label>
+                <div class="border  mh">
+                    <img id="file-ip-1-preview" src="{{project.image}}" alt="">
+                </div>
                     <i id="i" class="fa-solid fa-paperclip" for="input-image"></i>
-                <input class="form-control shdw" type="file" id="input-image" name="image" >
+                <input class="form-control shdw" type="file" id="input-image" accept="image.*" name="image" onchange="showPreview(event);"
+                  value="{{project.image}}" >
               </div>
 
               <div class="d-grid gap-2 d-md-flex justif y-content-md-end mb-3 k ">

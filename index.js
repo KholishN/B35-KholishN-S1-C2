@@ -1,4 +1,3 @@
-const { query } = require("express");
 const express = require("express");
 const bcrypt = require("bcryptjs")
 const session = require("express-session")
@@ -6,6 +5,7 @@ const flash = require("express-flash")
 const app = express();
 PORT = 5000;
 const db = require("./connection/db");
+const upload = require("./middlewares/uploadFile")
 const { password } = require("pg/lib/defaults");
 const isLogin = false;
 const project = []
@@ -13,6 +13,7 @@ const month=["Januari","Febuary","Maret","April","Mei","Juni","Juli","Agustus","
 
 app.set("view engine","hbs");
 app.use("/public", express.static(__dirname + "/public"));
+app.use("/upload", express.static(__dirname + "/upload"));
 app.use(express.urlencoded({ extended: false }));
 app.use(session({
     secret: "rahasia",
@@ -23,11 +24,26 @@ app.use(session({
 app.use(flash())
 
 app.get("/",(req, res) =>{
-    console.log(req.session)
+    // console.log(req.session)
     db.connect((error, client, done) =>{
         if (error) throw error
-        
-        const query = 'SELECT * FROM tb_project'
+
+        let query = ""
+
+        if(req.session.isLogin == true){
+            query = `SELECT  tb_project.*, tb_user.id as "user_id" , tb_user.name,email
+            FROM tb_project
+            LEFT JOIN tb_user
+            ON tb_project.author_id = tb_user.id
+            WHERE tb_project.author_id = ${req.session.user.id}
+            ORDER BY tb_project.id DESC`
+        }else{
+            query = `SELECT  tb_project.*, tb_user.id as "user_id" , tb_user.name,email
+            FROM tb_project
+            LEFT JOIN tb_user
+            ON tb_project.author_id = tb_user.id
+            ORDER BY tb_project.id DESC`
+        }
 
         client.query(query,(error,result) =>{
 
@@ -35,11 +51,13 @@ app.get("/",(req, res) =>{
             const dbProject = result.rows;
 
             const newPro = dbProject.map((data) => {
-                data.isLogin = req.session.isLogin
-                data.duration = diff(data["start"],data["end"])
+                data.isLogin = req.session.isLogin;
+                data.duration = diff(data["start"],data["end"]);
+                data.name = data.name ? data.name : "Anonim";
+                data.image = data.image ? "/upload/" + data.image : "/public/assets/download.jpg"
                 return data;
             })
-            // console.log(newPro)
+            console.log(newPro)
             res.render("index", {   isLogin: req.session.isLogin,
                                     user: req.session.user
                                     ,project:newPro})
@@ -59,7 +77,12 @@ app.get("/project/:id",(req, res) =>{
     db.connect((error, client, done) =>{
             if (error) throw error;
 
-            const query =` SELECT * FROM tb_project WHERE id =${id}`;
+            const query = `SELECT  tb_project.*, tb_user.id as "user_id" , tb_user.name,email
+                            FROM tb_project
+                            LEFT JOIN tb_user
+                            ON tb_project.author_id = tb_user.id
+                            WHERE tb_project.id =${id}`;
+                            
 
             client.query(query,(error,result) =>{
                 if (error) throw error;
@@ -69,8 +92,9 @@ app.get("/project/:id",(req, res) =>{
                 dbProject.duration = diff(dbProject["start"],dbProject["end"]);
                 dbProject.start = startend(dbProject.start);
                 dbProject.end = startend(dbProject.end);
+                dbProject.image = dbProject.image ? "/upload/" + dbProject.image : "/public/assets/download.jpg"
 
-
+                console.log(dbProject)
                 res.render("detail-project", { isLogin: req.session.isLogin,user: req.session.user ,project: dbProject})
             })
             done()
@@ -88,13 +112,15 @@ app.get("/addproject",(req, res) =>{
 
 });
 
-app.post("/addproject",(req, res) =>{
+app.post("/addproject", upload.single('image'), (req, res) =>{
 
     const title = req.body.title;
     const start = req.body.start;
     const end = req.body.end;
     const content = req.body.content;
     const technologies = [];
+    const userId = req.session.user.id;
+    const fileName = req.file.filename
 
     if (req.body.html) {
         technologies.push('html');
@@ -121,7 +147,9 @@ app.post("/addproject",(req, res) =>{
     db.connect((error, client, done) =>{
         if (error) throw error;
 
-        const query =` INSERT INTO tb_project(title, start, "end", content, technologies) VALUES ('${title}','${start}','${end}','${content}',ARRAY ['${technologies[0]}','${technologies[1]}','${technologies[2]}','${technologies[3]}'])`;
+        const query =` INSERT INTO tb_project(title, start, "end", content, technologies , author_id, image) 
+                        VALUES ('${title}','${start}','${end}','${content}',ARRAY ['${technologies[0]}','${technologies[1]}',
+                                '${technologies[2]}','${technologies[3]}'],${userId},'${fileName}')`;
 
         client.query(query,(error,result) =>{
             if (error) throw error;
@@ -166,9 +194,10 @@ app.get("/update-project/:id", (req, res) =>{
             dbProject.start = startend1(dbProject.start);
             dbProject.end = startend1(dbProject.end);
             dbProject.duration = diff(dbProject["start"],dbProject["end"]);
+            dbProject.image = dbProject.image ? "/upload/" + dbProject.image : "/public/assets/download.jpg"
 
 
-            console.log(dbProject)
+            // console.log(dbProject)
             res.render("update-project", {isLogin: req.session.isLogin, user: req.session.user , project: dbProject,id})
         })
         done()
@@ -334,4 +363,6 @@ function startend1(start,end){
     end = new Date (end);
     return `${start.getDate()} / ${[start.getMonth()]} / ${start.getFullYear()}`
 }
+
+
 
